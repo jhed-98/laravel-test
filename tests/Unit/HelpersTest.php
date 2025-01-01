@@ -9,8 +9,12 @@ class HelpersTest extends TestCase
     /**
      * A basic unit test example.
      */
-    public function test_example(): void
+    public function test_mail_validation(): void
     {
-        $this->assertTrue(true);
+        $resp = mail_validation('cod.mobile.jhed@gmail.com');
+        $this->assertTrue($resp);
+
+        $resp = mail_validation('cod.mobile.jhed');
+        $this->assertFalse($resp);
     }
 }
