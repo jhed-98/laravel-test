@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class TaskTest extends TestCase
+class TaskApiTest extends TestCase
 {
     //Refrescar la BD
     use RefreshDatabase;
