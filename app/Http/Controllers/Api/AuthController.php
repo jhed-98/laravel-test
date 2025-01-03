@@ -9,6 +9,25 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    public function login(Request $request)
+    {
+        $data = $request->validate([
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8'
+        ]);
+
+        //JWT
+        $token = JWTAuth::attempt($data);
+
+        if (!$token) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'token' => $token
+        ]);
+    }
+
     public function register(Request $request)
     {
         $data =  $request->validate([

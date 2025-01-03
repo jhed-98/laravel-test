@@ -39,3 +39,28 @@ test('users can logout', function () {
     $this->assertGuest();
     $response->assertRedirect('/');
 });
+
+/** API **/
+test('users can authenticate using the login screen by api', function () {
+    $user = User::factory()->create();
+
+    $response = $this->postJson('/api/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $response->assertStatus(200);
+    $response->assertJsonStructure(['token']);
+});
+
+test('users can not authenticate with invalid password by api', function () {
+    $user = User::factory()->create();
+
+    $response  = $this->postJson('/api/login', [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ]);
+
+    $response->assertStatus(401);
+    $response->assertJson(['message' => 'Unauthorized']);
+});
