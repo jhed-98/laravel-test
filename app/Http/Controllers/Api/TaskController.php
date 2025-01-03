@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaskController extends Controller
 {
@@ -22,6 +23,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        $user = JWTAuth::parseToken()->authenticate();
+
         $data = $request->validate([
             'name' => 'required',
             'description' => 'required',
@@ -30,6 +33,7 @@ class TaskController extends Controller
         ]);
 
         $data['image'] = Storage::put('tasks', $request->file('image'));
+        $data['user_id'] = $user->id;
 
         $resp = Task::create($data);
 
